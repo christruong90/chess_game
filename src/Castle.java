@@ -1,0 +1,101 @@
+import javax.swing.ImageIcon;
+
+/**
+ * 
+ * Generates a Castle object.
+ *
+ * @author Chris Truong 
+ * @version 2018
+ */
+public class Castle extends Piece {
+    /** Declared ImageIcon pieceImage instance that stores image of Castle based on colour. */
+    private ImageIcon pieceImage;
+    /** Declared xPos instance of the castle. */
+    int xPos;
+    /** Declared yPos instance of the castle. */
+    int yPos;
+    /** Declared type instance of the castle. */
+    private String type;
+    /** Declared colour instance of castle. */
+    private String colour;
+    
+    /**
+    * 
+    * Constructs an object of type Castle.
+    * @param type of type string is required for the piece constructor 
+    * which is automatically assigned a castle in the constructor at this point.
+    * @param colour of type String is required for the constructor to create the castle of either white or black.
+    * @param xPos of type int is required for constructor to indicate horizontal position of the castle on the board.
+    * @param yPos of type int is required for constructor to indicate vertical position of castle on the board.
+    */
+    public Castle(String type, String colour, int xPos, int yPos) {
+        super(type, colour, xPos, yPos);
+        
+        this.colour = colour;
+        
+        this.type = "castle";
+        
+        this.xPos = xPos;
+        
+        this.yPos = yPos;
+        
+        if (colour.equalsIgnoreCase("white")) {
+            pieceImage = new ImageIcon("src/images/w_castle.png");
+        } else {
+            pieceImage = new ImageIcon("src/images/b_castle.png");
+        }
+    }
+    
+    
+
+
+    /**
+     * Defined the getXPos method which returns xPos of the created Castle.
+     */
+    @Override
+    int getXPos() {
+        return xPos;
+    }
+
+    /**
+     * Defined the getYPos method which returns yPos of the created Castle.
+     */
+    @Override
+    int getYPos() {
+        return yPos;
+    }
+
+    /**
+     * Defined the setImage method which sets the image of the 
+     * Castle to the indicated Square on the board.
+     */
+    @Override
+    void setImage() {
+        Board.squares[xPos][yPos].setIcon(getImage());
+        
+    }
+
+    /**
+     * Defined the getImage method which returns the image of the Castle piece.
+     */
+    @Override
+    ImageIcon getImage() {
+        return pieceImage;
+    }
+
+    /**
+     * Defined the getType method which returns the type of the castle piece which is "castle".
+     */
+    @Override
+    String getType() {
+        return type;
+    }
+
+    /**
+     * Defined the getColour method which returns the colour of the object.
+     */
+    @Override
+    String getColour() {
+        return colour;
+    }
+}
