@@ -1,16 +1,15 @@
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
-public class Pawn extends Piece{
+public class Pawn extends Piece implements Serializable{
     /** Declared ImageIcon pieceImage instance that stores image of Pawn based on colour. */
     private ImageIcon pieceImage;
-    /** Declared xPos instance of the pawn. */
-    int xPos;
-    /** Declared yPos instance of the pawn. */
-    int yPos;
     /** Declared type instance of the pawn. */
     private String type;
     /** Declared colour instance of pawn. */
     private String colour;
+    
     
     /**
      * 
@@ -42,6 +41,7 @@ public class Pawn extends Piece{
    int getXPos() {
        return xPos;
    }
+   
 
    /**
     * Defined the getYPos method which returns yPos of the created pawn.
@@ -58,7 +58,6 @@ public class Pawn extends Piece{
    @Override
    void setImage() {
        Board.squares[xPos][yPos].setIcon(getImage());
-       
    }
 
    /**
@@ -84,5 +83,75 @@ public class Pawn extends Piece{
    String getColour() {
        return colour;
    }
+
+   /**
+    * implements move method that verifies whether a pawn piece movement is valid.
+    */
+@Override
+boolean move(Piece myPiece, int x, int y) {
+    
+        if (myPiece.getColour().equals("white") && myPiece.getColour() == Board.turn()) {
+            if (firstMove == true) {
+                if ( x - myPiece.getXPos() < 3 && x - myPiece.getXPos() > 0 
+                        && y - myPiece.getYPos() == 0) {
+                    myPiece.firstMove = false;
+                    Board.turn++;
+                    return true;
+                }
+            } else {
+                if ( x - myPiece.getXPos() < 2 && x - myPiece.getXPos() > 0 
+                        && y - myPiece.getYPos() == 0 && clear(myPiece, x, y)) {
+                    myPiece.firstMove = false;
+                    Board.turn++;
+                    return true;
+                } else {
+                    return false;
+                }
+            }    
+            
+        // black pawns
+        } else if(myPiece.getColour() == Board.turn()) {
+            if (firstMove == true) {
+                if (myPiece.getXPos() - x < 3 && myPiece.getXPos() - x > 0 
+                        && myPiece.getYPos() - y == 0 && clear(myPiece, x, y)
+                        && Board.turn() == myPiece.getColour()) {
+                    myPiece.firstMove = false;
+                    Board.turn++;
+                    return true;
+                }
+            } else {
+                if ( myPiece.getXPos() - x < 2 && myPiece.getXPos() - x > 0  
+                        && myPiece.getYPos() - y == 0 && clear(myPiece, x, y)) {
+                    myPiece.firstMove = false;
+                    Board.turn++;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+             
+            
+        }
+    
+    return false;
+}
+
+/**
+ * checks if the movement path of a pawn piece is valid.
+ */
+@Override
+boolean clear(Piece myPiece, int x, int y) {
+    if (myPiece.getColour().equals("white")) {
+        if (Board.squares[myPiece.getXPos() + 1][myPiece.getYPos()].hasPiece()) {
+            return false;
+        }
+    } else {
+        if (Board.squares[myPiece.getXPos() - 1][myPiece.getYPos()].hasPiece()) {
+            return false;
+        }
+    }
+    return true;
+}
     
 }

@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
 /**
@@ -6,14 +8,11 @@ import javax.swing.ImageIcon;
  * @author Chris Truong 
  * @version 2018
  */
-public class Queen extends Piece{
+public class Queen extends Piece implements Serializable{
     /** Declared ImageIcon pieceImage instance that 
      * stores image of bishop based on colour. */
     ImageIcon pieceImage;
-    /** Declared xPos instance of queen object.*/
-    int xPos;
-    /** Declared yPos instance of the queen object. */
-    int yPos;
+    
     /** Declared type instance of the queen object.*/
     String type;
     /** Declared colour instance of the queen object. */
@@ -91,6 +90,98 @@ public class Queen extends Piece{
     @Override
     String getColour() {
         return colour;
+    }
+
+    /**
+     * We declare the move method which verifies the movement range of a queen piece.
+     */
+    @Override
+    boolean move(Piece myPiece, int x, int y) {
+        int xDifference =  Math.abs(x - myPiece.getXPos());
+        int yDifference = Math.abs(y - myPiece.getYPos());
+        if (Board.turn() == myPiece.getColour()) {
+            // vertical path 
+            if (x == myPiece.getXPos() && y >= 0 && clear(myPiece, x, y)) {
+                Board.turn++;
+                return true;
+            } 
+            // horizontal path         
+            if (y == myPiece.getYPos() && x >= 0 && clear(myPiece, x, y)) {
+                Board.turn++;
+                return true;
+            }
+            // Diagonal Path
+            if (xDifference == yDifference && clear(myPiece, x, y)) {
+                Board.turn++;
+                return true;
+            } 
+        }
+        
+        return false;
+        
+    }
+
+    /**
+     * we declare the clear method which checks the path of a queen piece's path.
+     */
+    @Override
+    boolean clear(Piece myPiece, int x, int y) {
+        
+        
+       // checking vertical path
+        if (y == myPiece.getYPos()) {
+            int max = Math.max(myPiece.getXPos(), x);
+            int min = Math.min(myPiece.getXPos(), x);
+            
+            for (int i = min; i < max; i++) {
+                if(Board.squares[i][y].hasPiece()) {
+                    return false;
+                }
+            }
+        }
+        // checking horizontal path
+        if (x == myPiece.getXPos()) {
+            int max = Math.max(myPiece.getYPos(), y);
+            int min = Math.min(myPiece.getYPos(), y);
+            
+            for (int i = min; i < max; i++) {
+                if (Board.squares[x][i].hasPiece()) {
+                    return false;
+                }
+            }
+        }
+        
+     // Checking direction going downwards
+        if (x - myPiece.getXPos() > 0) {
+            for (int i = myPiece.getXPos(), j = myPiece.getYPos(); i < x && j < y; i++, j++) {
+                if (Board.squares[i][j].hasPiece()) {
+                    return false;
+                }
+            }
+            
+            for (int i = myPiece.getXPos(), j = myPiece.getYPos(); i < x && j > y; i++, j-- ) {
+                if (Board.squares[i][j].hasPiece()) {
+                    return false;
+                }
+            }
+        }
+        
+        // checking for direction going upwards
+        if (x - myPiece.getXPos() < 0) {
+            for (int i = myPiece.getXPos(), j = myPiece.getYPos(); i > x && j > y; i--, j--) {
+                if (Board.squares[i][j].hasPiece()) {
+                    return false;
+                }
+            }
+            
+            for (int i = myPiece.getXPos(), j = myPiece.getYPos(); i > x && j < y; i--, j++ ) {
+                if (Board.squares[i][j].hasPiece()) {
+                    return false;
+                }
+            }
+            
+        }
+        return true;
     }
     
 }

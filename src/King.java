@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
 /**
@@ -6,13 +8,10 @@ import javax.swing.ImageIcon;
  * @author Chris Truong 
  * @version 2018
  */
-public class King extends Piece{
+public class King extends Piece implements Serializable{
     /** Declared ImageIcon pieceImage instance that stores of king based on colour.*/
     private ImageIcon pieceImage;
-    /** Declared xPos instance of the king. */
-    int xPos;
-    /** Declared yPos instance of the king. */
-    int yPos;
+    
     /** Declared type instance of the king object. */
     private String type;
     /** Declared colour instance of the king object. */
@@ -89,6 +88,47 @@ public class King extends Piece{
     @Override
     String getColour() {
         return colour;
+    }
+
+    /**
+     * we implement the move method which verifies the the movement range of a king piece.
+     */
+    @Override
+    boolean move(Piece myPiece, int x, int y) {
+        int xDiff = Math.abs(x - myPiece.getXPos());
+        int yDiff = Math.abs(y - myPiece.getYPos());
+
+        
+        if (Board.turn() == myPiece.getColour()) {
+            if (xDiff == 1 && yDiff == 1) {
+                Board.turn++;
+                return true;
+            } 
+            
+            if (xDiff == 1 && yDiff == 0) {
+                Board.turn++;
+                return true;
+            } 
+            
+            if (xDiff == 0 && yDiff == 1) {
+                Board.turn++;
+                return true;
+            } 
+            
+        }
+        return false;
+    }
+
+    /**
+     * clear method verifies whether the the movement path of a king piece is clear.
+     */
+    @Override
+    boolean clear(Piece myPiece, int x, int y) {
+        if (Board.squares[x][y].getPiece().getColour() == myPiece.getColour()) {
+            return false;
+        }
+        
+        return true;
     }
 
 }

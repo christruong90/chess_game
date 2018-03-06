@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
 /**
@@ -6,13 +8,10 @@ import javax.swing.ImageIcon;
  * @author Chris Truong 
  * @version 2018
  */
-public class Bishop extends Piece {
+public class Bishop extends Piece implements Serializable{
     /** Declared ImageIcon pieceImage instance that stores image of Bishop based on colour. */
     private ImageIcon pieceImage;
-    /** Declared xPos instance of the bishop. */
-    int xPos;
-    /** Declared yPos instance of the bishop. */
-    int yPos;
+    
     /** Declared type instance of the bishop. */
     private String type;
     /** Declared colour instance of bishop. */
@@ -64,7 +63,6 @@ public class Bishop extends Piece {
     @Override
     void setImage() {
         Board.squares[xPos][yPos].setIcon(getImage());
-        
     }
 
     /**
@@ -89,6 +87,68 @@ public class Bishop extends Piece {
     @Override
     String getColour() {
         return colour;
+    }
+
+    /**
+     * checks if the movement of a bishop piece is valid.
+     */
+    @Override
+    boolean move(Piece myPiece, int x, int y) {
+        int xDifference = Math.abs(x - myPiece.getXPos());
+        int yDifference = Math.abs(y - myPiece.getYPos());
+        
+        
+        if(Board.turn() == myPiece.getColour()) {
+            if (xDifference == yDifference && clear(myPiece, x, y)) {
+                Board.turn++;
+                return true;
+            }
+        }
+        
+            return false;
+        
+    }
+
+    /**
+     * checks if the path of a bishop piece is valid.
+     */
+    @Override
+    boolean clear(Piece myPiece, int x, int y) {
+        
+        // Checking direction going downwards
+        if (x - myPiece.getXPos() > 0) {
+            for (int i = myPiece.getXPos(), j = myPiece.getYPos(); i < x && j < y; i++, j++) {
+                if (Board.squares[i][j].hasPiece()) {
+                    return false;
+                }
+            }
+            
+            for (int i = myPiece.getXPos(), j = myPiece.getYPos(); i < x && j > y; i++, j-- ) {
+                if (Board.squares[i][j].hasPiece()) {
+                    return false;
+                }
+            }
+        }
+        
+        // checking for direction going upwards
+        if (x - myPiece.getXPos() < 0) {
+            for (int i = myPiece.getXPos(), j = myPiece.getYPos(); i > x && j > y; i--, j--) {
+                if (Board.squares[i][j].hasPiece()) {
+                    return false;
+                }
+            }
+            
+            for (int i = myPiece.getXPos(), j = myPiece.getYPos(); i > x && j < y; i--, j++ ) {
+                if (Board.squares[i][j].hasPiece()) {
+                    return false;
+                }
+            }
+            
+        }
+        
+        
+        
+        return true;
     }
     
    

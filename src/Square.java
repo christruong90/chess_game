@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Container;
 import java.awt.event.*;
+import java.io.Serializable;
 import java.awt.GridLayout;
 
 /**
@@ -13,7 +14,7 @@ import java.awt.GridLayout;
  * @author Chris Truong 
  * @version 2018
  */
-public class Square extends JButton {
+public class Square extends JButton implements Serializable {
     
     /** Declared myPiece instance of type Piece. */
     private Piece myPiece = null;
@@ -67,6 +68,7 @@ public class Square extends JButton {
         Board.squares[x][y].setIcon(null);
         myPiece = null;
         pieceImage = null;
+        
     }
     
     /**
@@ -94,6 +96,8 @@ public class Square extends JButton {
         return myPiece;
     }
     
+    
+    
     /**
      * Declared hasPiece method.
      * @return returns boolean indicating whether current square has a piece or not.
@@ -114,7 +118,18 @@ public class Square extends JButton {
      * of the square piece is being assigned to
      * @param yCoordinate required for method to indicate vertical position 
      * of the square the piece is being assigned to
+     * 
      */
+    public void setPiece(Piece piece, int x, int y) {
+        if (piece != null) {
+            piece.setXPos(x);
+            piece.setYPos(y);
+        }
+        
+        Board.squares[x][y].myPiece = piece;
+        myPiece = piece;
+    }
+    
     public void setPiece(String piece, String colour, int xCoordinate, int yCoordinate) {
         if (piece.equalsIgnoreCase("pawn")) {
             myPiece = new Pawn("pawn", colour, xCoordinate, yCoordinate);

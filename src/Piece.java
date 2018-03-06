@@ -6,17 +6,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Container;
 import java.awt.event.*;
+import java.io.Serializable;
 import java.awt.GridLayout;
 
-abstract class Piece {
+abstract class Piece implements Serializable{
     /** Declared colour instance of string type. */
     private String colour;
     /** Declared xPos instance of type int.*/
-    private int xPos;
+    protected int xPos;
     /** Declared yPos instance of type int. */
-    private int yPos;
+    protected int yPos;
     /** Declared type instance of String type. */
     private String type;
+    /** Declared firstMove instance of pawn */
+    protected boolean firstMove = true;
     
     /**
      * 
@@ -34,6 +37,15 @@ abstract class Piece {
         this.yPos = yPos;
     }
     
+    
+    public void setXPos(int x) {
+        xPos = x;
+    }
+    
+    public void setYPos(int y) {
+        yPos = y;
+    }
+    
     /** Declared abstract method getXPos. */
     abstract int getXPos();
     /** Declared abstract method getYPos. */
@@ -44,6 +56,12 @@ abstract class Piece {
     abstract ImageIcon getImage();
     /** Declared abstract method getType. */
     abstract String getType();
-    
+    /** Declared abstract method getColour. */
     abstract String getColour();
+    /** Declared abtract method clear. */
+    abstract boolean clear(Piece myPiece, int x, int y);
+    /** Declared abstract method move. */
+    abstract boolean move(Piece myPiece, int x, int y);
+
+    
 }

@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
 /**
@@ -7,13 +9,9 @@ import javax.swing.ImageIcon;
  * @author Chris Truong 
  * @version 2018
  */
-public class Knight extends Piece {
+public class Knight extends Piece implements Serializable{
     /** Declared ImageIcon pieceImage instance that stores image of Knight based on colour. */
     private ImageIcon pieceImage;
-    /** Declared xPos instance of the knight. */
-    int xPos;
-    /** Declared yPos instance of the knight. */
-    int yPos;
     /** Declared type instance of the knight. */
     private String type;
     /** Declared colour instance of knight. */
@@ -38,7 +36,7 @@ public class Knight extends Piece {
         if (colour.equalsIgnoreCase("white")) {
             pieceImage = new ImageIcon("src/images/w_knight.png");
         } else {
-        pieceImage = new ImageIcon("src/images/b_knight.png");
+            pieceImage = new ImageIcon("src/images/b_knight.png");
         }
        
     }
@@ -92,5 +90,42 @@ public class Knight extends Piece {
     @Override
     String getColour() {
         return colour;
+    }
+
+    /**
+     * checks if the movement of a knight piece is valid.
+     */
+    @Override
+    boolean move(Piece myPiece, int x, int y) {
+        int xDiff = Math.abs(x - myPiece.getXPos());
+        int yDiff = Math.abs(y - myPiece.getYPos());
+        
+        
+        
+        if (Board.turn() == myPiece.getColour()) {
+            if ((xDiff == 1) && (yDiff == 2)) {
+                Board.turn++;
+                return true;
+            }
+            
+            if ((yDiff == 1) && (xDiff == 2)) {
+                Board.turn++;
+                return true;
+            }
+        }
+        
+        
+        return false;
+        
+        
+    }
+
+    /**
+     * checks if the pathway of a knight piece is clear.
+     */
+    @Override
+    boolean clear(Piece myPiece, int x, int y) {
+        // TODO Auto-generated method stub
+        return true;
     }
 }
